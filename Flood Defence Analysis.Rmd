@@ -27,14 +27,6 @@ knitr::opts_chunk$set(
 )
 ```
 
-# Load required packages
-library(tidyverse)
-library(car)
-library(ggcorrplot)
-library(knitr)
-library(kableExtra)
-
-
 # Main Findings
 •	Regional characteristics significantly influence flood defence effectiveness, with Eastern and Northern regions showing notably higher condition ratings (p < 0.001)
 
@@ -58,8 +50,6 @@ Eastern and Northern regions demonstrated significantly different defence patter
 The analysis provides strong evidence for differentiated management strategies based on local conditions, with particular attention needed for coastal authorities regardless of their regional location.
 
 
-## Load Required Packages
-
 ```{r packages}
 # Install required packages if not already installed
 if (!require("tidyverse")) install.packages("tidyverse")
@@ -70,6 +60,8 @@ if (!require("ggcorrplot")) install.packages("ggcorrplot")
 library(tidyverse)
 library(car)
 library(ggcorrplot)
+library(knitr)
+library(kableExtra)
 
 # Set seed for reproducibility
 set.seed(123)
@@ -78,7 +70,7 @@ set.seed(123)
 # Introduction
 Flood defence infrastructure plays an increasingly critical role in protecting communities and assets across the United Kingdom, particularly as climate change intensifies the frequency and severity of extreme weather events. The Environment Agency [@ea2021state] estimates that annual flood damage costs in the UK exceed £1.4 billion, making effective flood defence management crucial for both public safety and economic stability. The relationship between regional characteristics, coastal proximity, and defence maintenance presents complex challenges for local authorities tasked with flood risk management.
 
-Recent assessments of UK flood defence systems highlight the varied challenges faced by different regions. Studies [@MILLER2017345; @sayers2023present; @priestley2022flood] report that approximately 1.7 million properties in England are at significant risk of flooding, with coastal areas facing additional pressures from rising sea levels and storm surges. This risk is not evenly distributed, with some regions experiencing disproportionate challenges due to their geographical and climatic characteristics [@sayers2023present].
+Recent assessments of UK flood defence systems highlight the varied challenges faced by different regions. Studies [@miller2017impacts; @sayers2023present; @priestley2022flood] report that approximately 1.7 million properties in England are at significant risk of flooding, with coastal areas facing additional pressures from rising sea levels and storm surges. This risk is not evenly distributed, with some regions experiencing disproportionate challenges due to their geographical and climatic characteristics [@sayers2023present].
 
 Local authorities operate within the framework of the Flood and Water Management Act 2010, but their capacity to maintain and improve flood defences varies significantly. @priestley2022flood demonstrate that factors including budget allocations, geographic location, and population size create substantial disparities in defence effectiveness across different areas. The Environment Agency's Long-term Investment Scenarios (LTIS) report [@ea2019long] suggests that every £1 invested in flood defence maintenance could save £8 in future repair costs and flood damage.
 
@@ -94,9 +86,8 @@ This study aims to investigate how regional characteristics, coastal location, a
 By analysing these relationships through simulated data based on real-world parameters, the aim is to provide insights that can inform more effective flood defence management strategies and resource allocation decisions.
 
 
-## Data Simulation
 
-```{r simulate_function}
+```{r simulate_function} 
 simulate_flood_data <- function(n_authorities = 100) {
     # Define categorical variables
     regions <- c("North", "South", "East", "West", "Central")
@@ -174,49 +165,6 @@ This study utilised simulated data modelled after the National Audit Office's (N
 
 The simulation expanded upon the NAO dataset by generating data for 100 local authorities while maintaining the core structural relationships observed in the original data. The geographical distribution across five regions (North, South, East, West, and Central) were preserved and the distinction between coastal and inland locations, which reflects the actual distribution of flood defence assets across England.
 
-The simulation incorporated two types of variables:
-
-Categorical Variables:
-
-•	Region (reflecting the five primary regions in England)
-
-•	Coastal status (Coastal/Inland, maintaining the original dataset's geographical distinctions)
-
-•	Population size (Small/Medium/Large, based on local authority classifications)
-
-Numerical Variables:
-
-•	Annual maintenance budget (normally distributed, with parameters derived from typical local authority spending patterns)
-
-•	Number of defences (Poisson distributed, reflecting the count-based nature of defence assets)
-
-•	Defence condition ratings (1-5 scale, where 1 represents the best condition, matching the Environment Agency's rating system)
-
-•	Annual flood incidents (modelled on historical patterns)
-
-•	Proportion of defences above required condition (based on Environment Agency standards)
-
-The relationships between variables were modelled to reflect real-world patterns observed in the NAO dataset:
-
-•	Maintenance budgets were scaled according to population size, reflecting actual local authority resource allocation patterns
-
-•	Defence counts were adjusted based on both population size and coastal status, mirroring the higher density of defences in coastal areas
-
-•	Defence conditions were linked to maintenance budgets and regional factors, incorporating geographical variations in maintenance challenges
-
-•	Flood incidents were modelled to reflect both defence condition and coastal proximity
-
-Statistical Analysis: To examine the relationships between these variables, four primary analytical approaches were employed:
-
-1.	Multiple linear regression to assess how various factors influence flood incident rates
-2.	Analysis of Variance (ANOVA) to examine regional and coastal differences in defence conditions
-3.	Chi-square analysis to investigate categorical relationships in flood risk
-4.	Correlation analysis to explore relationships between numerical variables
-
-All analyses were conducted using R (version 4.1.0), utilising the tidyverse package for data manipulation and visualization, and additional specialised packages for statistical analysis. The simulation code and analysis scripts were documented and version-controlled to ensure reproducibility by way of R Markdown.
-
-## Generate and Explore Data
-
 ```{r generate_data}
 # Generate the dataset
 
@@ -246,6 +194,23 @@ knitr::kable(regional_summary,
              caption = "Regional Summary Statistics",
              digits = 2)
 ```
+In the simulation design, both categorical and numerical variables were incorporated to reflect real-world flood defence management scenarios in England. The model included five primary English regions, distinguished between coastal and inland areas, and categorized population sizes into small, medium, and large based on local authority classifications.
+
+For numerical aspects, annual maintenance budgets using normal distribution was modelled, drawing from typical local authority spending patterns. Defence assets were represented using a Poisson distribution to account for their count-based nature. The Environment Agency's standard 1-5 condition rating system for defence structures was implemented, where 1 indicates optimal condition. The simulation also tracked annual flood incidents and monitored the proportion of defences meeting or exceeding required condition standards.
+
+To ensure realism, interconnected relationships between these variables based on patterns observed in the NAO dataset were established. Maintenance budgets were proportionally allocated according to population size, reflecting actual resource distribution practices among local authorities. The number of defence structures varied based on both population size and coastal proximity, with coastal areas typically showing higher defence density. Defence condition ratings were influenced by maintenance budget levels and regional factors, accounting for geographical variations in maintenance challenges. Finally, flood incident occurrence was modelled to respond to both the condition of defences and proximity to coastal areas.
+
+
+To examine the relationships between these variables, four primary analytical approaches were employed:
+
+1.	Multiple linear regression to assess how various factors influence flood incident rates
+2.	Analysis of Variance (ANOVA) to examine regional and coastal differences in defence conditions
+3.	Chi-square analysis to investigate categorical relationships in flood risk
+4.	Correlation analysis to explore relationships between numerical variables
+
+All analyses were conducted using R (version 4.1.0), utilising the tidyverse package for data manipulation and visualization, and additional specialised packages for statistical analysis. The simulation code and analysis scripts were documented and version-controlled to ensure reproducibility by way of R Markdown.
+
+
 
 # Results
 The statistical analysis of flood defence data revealed compelling patterns across multiple dimensions of defence effectiveness and flood incident occurrence. The investigation yielded several significant findings that demonstrate the complex interplay between geographical location, defence conditions, and flood risk management.
@@ -357,7 +322,6 @@ ggcorrplot(correlation_matrix,
 ```
 These findings paint a comprehensive picture of flood defence effectiveness across England, highlighting the critical importance of both geographical factors and maintenance conditions in determining flood risk. The results particularly emphasise the challenges faced by coastal authorities and the varying effectiveness of defence maintenance across different regions.
 
-## Save Results
 
 ```{r save_results}
 # Save the dataset
